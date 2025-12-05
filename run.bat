@@ -1,0 +1,6 @@
+@echo off
+echo Installing requirements (if not already installed)...
+python -m pip install -r requirements.txt
+echo Starting ProctorAI...
+python app.py
+pause

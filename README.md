@@ -1,27 +1,41 @@
-🎭 Real-Time Facial Expression Recognition System
+# 🎭 ProctorAI: Real-Time Behavioral Analysis System
 
-🚀 Overview
+## 🚀 Overview
 
-This project implements a real-time facial recognition system that detects human facial expressions dynamically. It can analyze live video feeds to identify emotions and potential suspicious activities, enhancing monitoring systems.
+This project implements a real-time facial recognition and behavioral analysis system. It is designed to identifying emotions and detecting potential suspicious activities (malpractice) in examination settings.
 
-🛠️ Features
+The system uses:
+- **Facial Expression Recognition (FER)**: To detect emotions like angry, happy, sad, neutral, etc.
+- **Object Detection (YOLOv8)**: To detect unauthorized objects like mobile phones.
 
-✔ Live Facial Expression Detection – Analyzes and classifies emotions in real-time.
+## 🛠️ Features
 
-✔ Malpractice Detection – Flags suspicious activities such as using unauthorized objects (e.g., mobile phones) in examination settings.
+✔ **Live Dashboard**: A modern web-based interface for monitoring.
+✔ **Expression Analysis**: Real-time classification of user emotions.
+✔ **Malpractice Detection**: Automatically flags "Cell Phone" usage with red bounding boxes.
+✔ **Session Stats**: Tracks session time and activity.
 
-✔ Red-Line Highlighting – Marks detected suspicious objects in real-time, allowing proctors to act quickly.
+## 📦 Tech Stack
 
-✔ Automated Monitoring – Reduces manual effort in reviewing recorded footage.
+- **Backend**: Python, Flask, OpenCV
+- **AI/ML**: FER (Facial Expression Recognition), Ultralytics YOLOv8
+- **Frontend**: HTML5, CSS3 (Modern Dark UI)
 
-🔍 How It Works
+## 🏃‍♂️ How to Run
 
-Uses computer vision and deep learning to track and classify facial expressions.
+1. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. **Run the Application**:
+   ```bash
+   python app.py
+   ```
+   Or simply double-click `run.bat`.
 
-Detects unidentified objects (e.g., mobile phones, tablets) and marks them in red for real-time alerting.
+3. **Open Browser**:
+   Navigate to `http://localhost:5000` to view the dashboard.
 
-Provides a visual interface for easy proctor decision-making.
+## 📝 Research & Citations
 
-I have done a complete research about on AI Pioneering Ethical, Analytical and Real time Emotional Recognition in Dynamic Human Expressions, which has been published in IEEE in the journal of ICCCDSAI 2025 (DOI: 10.1109/ICDSAAI65575.2025.11011864). I have included my extended research on this topic and project which i had later upscaled it.
-
-![image](https://github.com/user-attachments/assets/f624ddf9-fc5a-404a-bf23-8ea0a455eb18)
+> I have done a complete research about on AI Pioneering Ethical, Analytical and Real time Emotional Recognition in Dynamic Human Expressions, which has been published in IEEE in the journal of ICCCDSAI 2025 (DOI: 10.1109/ICDSAAI65575.2025.11011864). I have included my extended research on this topic and project which i had later upscaled it.

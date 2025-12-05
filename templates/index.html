@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behavioral Analysis System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0f;
+            --panel-bg: #13131f;
+            --accent-color: #00f2ea;
+            --alert-color: #ff0055;
+            --text-color: #e0e0e0;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            color: var(--text-color);
+        }
+
+        .status-badge {
+            background: rgba(0, 242, 234, 0.1);
+            color: var(--accent-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 0 10px rgba(0, 242, 234, 0.2);
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .video-panel {
+            flex: 2;
+            background: var(--panel-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .video-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 400px;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-title::before {
+            content: '';
+            width: 4px;
+            height: 15px;
+            background: var(--accent-color);
+            border-radius: 2px;
+            display: block;
+        }
+
+        .alert-box {
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .alert-item {
+            background: rgba(255, 0, 85, 0.1);
+            border-left: 3px solid var(--alert-color);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(10px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #555;
+            padding: 10px;
+        }
+
+        /* Scanline effect */
+        .video-panel::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>PROCTOR<span style="color:var(--accent-color)">AI</span></h1>
+        <div class="status-badge">SYSTEM ACTIVE</div>
+    </header>
+
+    <div class="main-container">
+        <div class="video-panel">
+            <img src="{{ url_for('video_feed') }}" class="video-feed" alt="Live Feed">
+        </div>
+
+        <div class="sidebar">
+            <div class="panel">
+                <div class="panel-title">Real-time Alerts</div>
+                <div class="alert-box" id="alert-container">
+                    <div class="stat-label">No active threats detected.</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">Session Statistics</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="uptime">00:00</div>
+                        <div class="stat-label">Session Duration</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer">
+                ProctorAI v1.0 • Facial Expression & Object Detection
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const alertContainer = document.getElementById('alert-container');
+        let startTime = Date.now();
+
+        function updateTime() {
+            const now = Date.now();
+            const diff = Math.floor((now - startTime) / 1000);
+            const m = Math.floor(diff / 60).toString().padStart(2, '0');
+            const s = (diff % 60).toString().padStart(2, '0');
+            document.getElementById('uptime').innerText = `${m}:${s}`;
+        }
+        
+        setInterval(updateTime, 1000);
+
+        function checkStatus() {
+            fetch('/status')
+                .then(response => response.json())
+                .then(data => {
+                    const alerts = data.alerts;
+                    // Only update if changes to avoid jitter, but simple replacement is fine for now
+                    alertContainer.innerHTML = '';
+                    
+                    if (alerts.length > 0) {
+                        alerts.forEach(alert => {
+                            const div = document.createElement('div');
+                            div.className = 'alert-item';
+                            div.innerText = alert;
+                            alertContainer.appendChild(div);
+                        });
+                    } else {
+                        alertContainer.innerHTML = '<div class="stat-label">No active threats detected.</div>';
+                    }
+                })
+                .catch(err => console.error(err));
+        }
+
+        setInterval(checkStatus, 1000);
+    </script>
+</body>
+</html>

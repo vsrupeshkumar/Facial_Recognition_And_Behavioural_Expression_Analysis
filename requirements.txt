@@ -1,0 +1,7 @@
+flask
+opencv-python
+fer
+ultralytics
+tensorflow
+tf-keras
+numpy
